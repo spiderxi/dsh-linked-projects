@@ -144,6 +144,7 @@ test('catalog, link and cwd round trip through the route', async () => {
     assert.equal(state.status, 200)
     assert.deepEqual(state.payload.linked, [])
     assert.equal(state.payload.current, adminPath)
+    assert.equal(state.payload.workspace, adminPath)
     assert.equal(state.payload.currentProject, admin.id)
 
     const linked = await call(route, { method: 'POST', url: `${ROUTE}/link`, body: { sessionId: 'session-1', add: [web.id] } })
@@ -156,6 +157,16 @@ test('catalog, link and cwd round trip through the route', async () => {
     assert.equal(cwd.status, 200)
     assert.equal(cwd.payload.cwd, webPath)
     assert.deepEqual(switched, [webPath])
+
+    // `workspace` stays the immutable root, and a bare path switch goes back to it.
+    const moved = await call(route, { url: `${ROUTE}/state?sessionId=session-1` })
+    assert.equal(moved.payload.current, webPath)
+    assert.equal(moved.payload.workspace, adminPath)
+
+    const back = await call(route, { method: 'POST', url: `${ROUTE}/cwd`, body: { sessionId: 'session-1', path: adminPath } })
+    assert.equal(back.status, 200)
+    assert.equal(back.payload.cwd, adminPath)
+    assert.deepEqual(switched, [webPath, adminPath])
   })
 })
 
