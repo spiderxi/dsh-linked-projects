@@ -1,0 +1,51 @@
+{
+  "name": "dsh-linked-projects",
+  "version": "0.1.0",
+  "description": "DSH 多项目关联：一个会话里勾选多个项目目录，注入项目清单上下文，支持 @project 提及与一键切换工作目录",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "workspace",
+    "multi-project"
+  ],
+  "author": "spiderxi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spiderxi/dsh-linked-projects.git"
+  },
+  "homepage": "https://github.com/spiderxi/dsh-linked-projects",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "dsh": ">=0.2.1-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-input-trigger"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/"
+  }
+}

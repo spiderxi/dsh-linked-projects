@@ -1,0 +1,6 @@
+# Bundle patch layer: this row loads the package main entry as the host half
+# (a plain Cordis plugin). The `dsh.client` declaration in package.json makes
+# the Web app load ./lib/client.js as the browser half.
+- insert:
+    - id: linked-projects
+      name: dsh-linked-projects
